@@ -3,12 +3,12 @@ Kibana에서 Ldap 연동을 통한 사용자 인증과 접근 권한을 관리�
 권한 관리를 조금만 확장하면, ElasticSearch의 Index 별 권한 관리도 가능할 수 있어 보입니다.
 
 # Kibana plugin 구성
-Kibana는 서버는 Node.js로, 클라이언트는 Angularjs로 제작되었습니다.
+Kibana는 서버는 Node.js로, 클라이언트는 Angularjs로 제작되었습니다.  
 Kibana 4.6.4 버전 기준으로, Angularjs 1.4.7을 사용하고 있습니다.
 
-플러그인은 /kibana/src/plugins 또는 /kibana/installedPlugins 에서 확인할 수 있습니다.
-/kibana/src/plugins는 Kibana를 기본적으로 구성하고있는 구성요소들이 들어 있습니다.
-새로 제작하는 플러그인은 /kibana/installedPlugins에 구성하는 것이 바람직합니다.
+플러그인은 /kibana/src/plugins 또는 /kibana/installedPlugins 에서 확인할 수 있습니다.  
+/kibana/src/plugins는 Kibana를 기본적으로 구성하고있는 구성요소들이 들어 있습니다.  
+새로 제작하는 플러그인은 /kibana/installedPlugins에 구성하는 것이 바람직합니다.  
 
 
 # 파일 구성

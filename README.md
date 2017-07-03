@@ -67,9 +67,9 @@ User List는 비어 있는 것을 확인할 수 있습니다.
 설정 방식은 URL의 경로를 입력하여 접근 가능한 경로를 추가해 줍니다.
 
 1. 각 항목은 콤마로 구분됩니다.
-1. 권한을 주려는 페이지 또는 기능이 api를 사용하는 경우, 해당 api 경로도 허용해 주어야 합니다.
+1. 권한을 주려는 페이지 또는 기능이 api를 사용하는 경우, 해당 api 경로도 허용해 주어야 합니다.  
     ex, Sense의 경우, /app/sense와 /api/sense 두개를 추가해 주어야 합니다.
 1. 입력한 경로에 #이 포함된 경우, # 이후는 무시하고 앞부분의 경로에 대해 허용 처리 됩니다.
-1. config.json 파일에서 설정한 limited_access_ui 에서는, #을 구분자로 링크를 찾습니다.
-    ex, /app/kibana#discover 를 입력한 경우, 경로가 /app/kibana 를 포함하고 있고,
+1. config.json 파일에서 설정한 limited_access_ui 에서는, #을 구분자로 링크를 찾습니다.  
+    ex, /app/kibana#discover 를 입력한 경우, 경로가 /app/kibana 를 포함하고 있고,  
     hash 값에 discover가 포함된 링크를 찾아 숨겨줍니다.
