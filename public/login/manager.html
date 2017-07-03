@@ -1,0 +1,129 @@
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./" onclick="return false;">Webzen auth - User Manager</a>
+        </div>
+<!--         <div id="navbar" class="navbar-collapse collapse"> -->
+<!--           <ul class="nav navbar-nav navbar-right"> -->
+<!--             <li><a href="#">Dashboard</a></li> -->
+<!--             <li><a href="#">Settings</a></li> -->
+<!--             <li><a href="#">Profile</a></li> -->
+<!--             <li><a href="#">Help</a></li> -->
+<!--           </ul> -->
+<!--         </div> -->
+      </div>
+    </nav>
+	<div class="container-fluid col-md-10">
+      <div class="row">
+        <div class="main">
+<!--           <h1 class="page-header">Dashboard</h1> -->
+          <h2 class="sub-header">Add User</h2>
+
+          <div class="row placeholders">
+            <form name="frmCreate" id="frmCreate" class="form-horizontal" style="float:left; width:400px;" ng-submit="create($event)">
+              <div ng-show="userLevel==0" class="form-group">
+                <label for="inputIndices" class="col-sm-2 control-label">Type</label>
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="createTarget">
+                    <option ng-value="group">Group</option>
+                    <option ng-value="user">User</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputUsername" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="Name" name="name" ng-model="createData.name">
+                </div>
+              </div>
+              <div ng-hide="createTarget.toLowerCase() != 'user'" class="form-group">
+                <label for="inputIndices" class="col-sm-2 control-label">Group</label>
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="createData.group">
+                    <option ng-repeat="group in accepted_groups" ng-value="group.name">{{group.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <h4 ng-if="message">{{message}}</h4>
+                  <button type="submit" class="btn btn-default" ng-class="{'disabled': working}">Add</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <h2 ng-show="userLevel==0" class="sub-header">Group List</h2>
+          <div ng-show="userLevel==0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Group name</th>
+                  <th>Date Created</th>
+                  <th>Role</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="group in groups">
+                  <td class="col-md-3">
+                    {{group.name}}
+                  </td>
+                  <td class="col-md-3" ng-bind="group.created | date:'yyyy-MM-dd hh:mm:ss'"></td>
+                  <td class="col-md-3" ng-hide="editGroups[group.name]">{{group.role}}</td>
+                  <td class="col-md-3" ng-show="editGroups[group.name]">
+                    <input type="text" ng-model="group.role">
+                  </td>
+                  <td class="col-md-3">
+                    <button ng-hide="editGroups[group.name]" ng-click="editGroup($event, group)">Edit</button>
+                    <button ng-show="editGroups[group.name]" ng-click="updateGroup($event, group)">Confirm</button>
+                    <button ng-show="editGroups[group.name]" ng-click="editGroups[group.name] = false;">Cancel</button>
+                    <button ng-show="editGroups[group.name]" ng-click="deleteGroup($event, group)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 class="sub-header">User List</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>User name</th>
+                  <th>Date Created</th>
+                  <th>group</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="user in users">
+                  <td class="col-md-3">
+                    {{user.name}}
+                  </td>
+                  <td class="col-md-3" ng-bind="user.created | date:'yyyy-MM-dd hh:mm:ss'"></td>
+                  <td class="col-md-3" ng-hide="editUsers[user.name]">{{user.group}}</td>
+                  <td class="col-md-3" ng-show="editUsers[user.name]">
+                    <select ng-model="user.group">
+                      <option ng-repeat="group in accepted_groups" ng-value="group.name">{{group.name}}</option>
+                    </select>
+                  </td>
+                  <td class="col-md-3">
+                    <button ng-hide="editUsers[user.name]" ng-click="editUser($event, user)">Edit</button>
+                    <button ng-show="editUsers[user.name]" ng-click="updateUser($event, user)">Confirm</button>
+                    <button ng-show="editUsers[user.name]" ng-click="editUsers[user.name] = false;">Cancel</button>
+                    <button ng-show="editUsers[user.name]" ng-click="deleteUser($event, user)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,16 @@
+{
+    "kibana_version":"4.6.4",
+    "default_cookie_secret": "kibana-auth-plugin-by-goofy-cookie-secret",
+    "default_user_secret": "kibana-auth-plugin-by-goofy-user-secret",
+    "index_user_info": ".kibana-auth-user",
+    "index_group_info": ".kibana-auth-group",
+    "index_log": ".kibana-auth-log",
+    "doc_type": "user_info",
+    "root_account": "",
+    "default_role": "/elasticsearch/,/app/kibana,/api,/logout,/login",
+    "default_role_for_manager": "/kibana-auth#manager",
+    "limited_access_ui": "/app/sense,/app/kibana#settings,/app/kibana-auth#manager",
+    "ldap_url":"ldap://ldap.yourdomain.com",
+    "ldap_domain":"yourdomain.com",
+    "ldap_path":"OU=Users,OU=Groups,DC=yourdomain,DC=com"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "kibana-auth",
+  "version": "0.0.1",
+  "description": "authentication for kibana"
+}
