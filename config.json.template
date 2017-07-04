@@ -8,7 +8,7 @@
     "doc_type": "user_info",
     "root_account": "",
     "default_role": "/elasticsearch/,/app/kibana,/api,/logout,/login",
-    "default_role_for_manager": "/kibana-auth#manager",
+    "default_role_for_manager": "/app/kibana-auth#manager",
     "limited_access_ui": "/app/sense,/app/kibana#settings,/app/kibana-auth#manager",
     "ldap_url":"ldap://ldap.yourdomain.com",
     "ldap_domain":"yourdomain.com",

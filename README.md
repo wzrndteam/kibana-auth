@@ -40,6 +40,8 @@ config.json 파일 변경 후 Kibana를 재시작 해야만 변경 사항이 적
 초기 구성 이후 빈 값으로 변경하기를 권장합니다.  
 - default_role: 기본적으로 모든 계정이 접근 가능한 경로를 지정합니다.
     - ex, "/elasticsearch/,/app/kibana,/logout,/login"
+- default_role_for_manager: 특수 계정 그룹인 Manager 그룹에 기본적으로 허용 할 경로를 지정합니다.
+    - ex, "/app/kibana-auth#manager"
 - limited_access_ui: Kibana UI 상에서 접근을 통제할 링크의 경로를 지정합니다.  
 여기에 지정된 경로는, Kibana UI의 메뉴 상에서 숨겨지게 됩니다.
     - ex, "/app/sense,/app/kibana#settings,/app/kibana-auth#manager"
