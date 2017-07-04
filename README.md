@@ -23,11 +23,12 @@ Offline 환경에서 설치할 경우, 설치 파일을 다운로드 받아서 �
     bin\kibana plugin -i kibana-auth file://e/kibana4-auth-0.0.1.zip
 
 # 초기 설정
-우선 Config 파일을 구성해야 합니다.
+우선 Config 파일을 구성해야 합니다.  
+config.json.template 파일을 복사하여, config.json 파일을 만듭니다.
 
 ## Config 파일 구성
-설정 파일은 config.json 파일입니다.
-config.json 파일 변경 후 Kibana를 재시작 해야만 변경 사항이 적용 됩니다.
+config.json 파일 변경 후 Kibana를 재시작 해야만 변경 사항이 적용 됩니다.  
+설정 항목 별 내용은 아래와 같습니다.  
 
 - kibana_version : Kibana의 버전을 명시합니다. (ex, 4.6.4)
 - default_cookie_secret: 인증 쿠키를 암호화 하는데 사용할 키를 설정합니다.
@@ -43,11 +44,11 @@ config.json 파일 변경 후 Kibana를 재시작 해야만 변경 사항이 적
 여기에 지정된 경로는, Kibana UI의 메뉴 상에서 숨겨지게 됩니다.
     - ex, "/app/sense,/app/kibana#settings,/app/kibana-auth#manager"
 - ldap_url: LDAP 인증 서버 정보를 입력합니다.
-    - ex, "ldap://nid1.webzen.co.kr"
+    - ex, "ldap://yourdomain.com"
 - ldap_domain: LDAP 인증 도메인 정보를 입력합니다.
-    - ex, "webzen.co.kr"
+    - ex, "yourdomain.com"
 - ldap_path: LDAP 인증 경로를 인증합니다.
-    - ex, "OU=사용자,OU=웹젠,OU=TopGroup,DC=webzen,DC=co,DC=kr"
+    - ex, "OU=Users,OU=Group,DC=youdomain,DC=com"
 
 
 ## 초기 정보 구성
