@@ -35,6 +35,9 @@ Kibana 4.6.4 버전 기준으로, Angularjs 1.4.7을 사용하고 있습니다.
 - logout.html : 로그아웃 버튼
 - logout.js : 로그아웃 버튼 컨트롤러
 
+### /public/ui-hacks
+- hide-nav.js : UI 상에서 특정 메뉴를 제거하고, 권한이 없는 URL에 대한 접근을 차단하는 스크립트
+
 ### /server
 서버에서 사용되는 파일 집합
 

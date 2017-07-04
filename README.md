@@ -3,11 +3,24 @@ Kibana에서 Ldap 연동을 통한 사용자 인증과 접근 권한을 관리�
 권한 관리를 조금만 확장하면, ElasticSearch의 Index 별 권한 관리도 가능할 수 있어 보입니다.
 
 # 설치
-아직 설치 패키지를 제공하고 있지 않습니다.  
-플러그인 폴더 전체를 Kibana의 설치 폴더 하위의 InstalledPlugins 폴더에 복사해 주면 됩니다.
+## Online 설치
+아래와 같이 플러그인을 설치할 수 있습니다.
 
-    ex, /opt/kibana/InstalledPlugins/
+    /opt/kibana/bin/kibana plugin -i kibana-auth -u https://github.com/wzrndteam/kibana-auth/releases/download/0.0.1/kibana4-auth-0.0.1.zip
 
+## Offline 설치
+Offline 환경에서 설치할 경우, 설치 파일을 다운로드 받아서 설치할 수 있습니다.
+
+    설치파일 : https://github.com/wzrndteam/kibana-auth/releases/download/0.0.1/kibana4-auth-0.0.1.zip
+
+설치 명령어는 아래와 같습니다.
+
+    /opt/kibana/bin/kibana plugin -i kibana-auth -u {설치파일경로}
+
+윈도우 환경일 경우, file:// 프로토콜을 이용하여 설치할 수 있습니다.
+
+    (설치 파일 경로가 E:\kibana4-auth-0.0.1.zip 일 경우)
+    bin\kibana plugin -i kibana-auth file://e/kibana4-auth-0.0.1.zip
 
 # 초기 설정
 우선 Config 파일을 구성해야 합니다.
