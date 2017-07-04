@@ -1,12 +1,18 @@
 let uiRoutes = require('ui/routes');
+var CryptoJS = require("crypto-js");
+
 
 let _objHttp = undefined;
 const _http = function (req, http) {
   req.method = req.method || "POST";
-  req.headers = req.headers || {"kbn-version": "4.6.5"};
 
   http = http || _objHttp;
   return _objHttp(req);
+}
+
+const encrypt = function (data, callback) {
+  let enc = CryptoJS.AES.encrypt(data, "kibana-auth-plugin-made-by-goofy-encryptkey").toString();
+  callback(enc);
 }
 
 const loginRouteInfo = {
@@ -14,6 +20,7 @@ const loginRouteInfo = {
   controller: function ($scope, $http) {
     _objHttp = $http;
     $('nav').remove();
+
     _http({
           url: "/getUserGroup"
     }).then(function (res) {
@@ -25,25 +32,28 @@ const loginRouteInfo = {
     $scope.doLogin = function(e) {
       $('input[type="submit"]').hide();
 
-      _http({
-        url: "/trylogin",
-        data: {
-          username: $("[name=username]").val(),
-          password: $("[name=password]").val()
-        }
-      }).then(function(res) {
-        if (res.data == '') {
-          $scope.message = 'logged in successfully';
-          location.replace('/');
-        } else {
-          $scope.message = res.data;
-        }
-        $('input[type="submit"]').show();
-      }, function (res) {
-        $scope.message = res.statusText;
-        $('input[type="submit"]').show();
-      });
-      e.preventDefault();
+      encrypt($("[name=password]").val(), function (enc) {
+
+        _http({
+          url: "/trylogin",
+          data: {
+            username: $("[name=username]").val(),
+            password: enc
+          }
+        }).then(function(res) {
+          if (res.data == '') {
+            $scope.message = 'logged in successfully';
+            location.replace('/');
+          } else {
+            $scope.message = res.data;
+          }
+          $('input[type="submit"]').show();
+        }, function (res) {
+          $scope.message = res.statusText;
+          $('input[type="submit"]').show();
+        });
+
+      });      
     }
   }
 }
@@ -144,12 +154,17 @@ const managerRouteInfo = {
     }
 
     $scope.create = function (e) {
+      if ($scope.creating) {
+        return false;
+      }
+      
       if (!$scope.createData || !$scope.createData.name) {
         $scope.message = "Invalid " + $scope.createTarget + " name";
         return false;
       }
-
-      if ($scope.creating) {
+      
+      if (!$scope.createData.group) {
+        $scope.message = "Invalid group";
         return false;
       }
 
@@ -158,10 +173,10 @@ const managerRouteInfo = {
 
       if ($scope.createTarget == 'Group') {
         $scope.createData.level = 2;
-      } else if (!$scope.createData.group) {
-        $scope.message = "Invalid group";
-        return false;
+      } else {
+        $scope.createData.level = undefined;
       }
+      
       _req('create', {data: $scope.createData}, undefined, $scope.createTarget).then(function (res) {
         if (!res.data) {
           $scope.message = "Failed to add" + $scope.createTarget;

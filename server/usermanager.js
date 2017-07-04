@@ -16,6 +16,10 @@ module.exports = function (server, config) {
     var hash = crypto.createHash('sha256', secret).update(pwd).digest('hex');
     return hash;
   };
+
+  const getRemoteAddress = function(request) {
+    return request.info.address || request.info.remoteAddress;
+  }
   
   const create = function (request, reply) {
     let index = request.params.target == 'user' ? auth_config.index_user_info : auth_config.index_group_info;
@@ -32,7 +36,7 @@ module.exports = function (server, config) {
         return reply(err);
       }
       if (res.created) {
-        _log('create_' + request.params.target, data);
+        _log(request, 'create_' + request.params.target, data);
         reply(true);
       } else {
         reply(false);
@@ -59,7 +63,7 @@ module.exports = function (server, config) {
             doc: data
           }
         }).then(function (res) {
-          _log('update_' + request.params.target, data);
+          _log(request, 'update_' + request.params.target, data);
           reply(true);
         });
       }
@@ -74,7 +78,7 @@ module.exports = function (server, config) {
       type: doc_type,
       id: encode(data.name)
     }).then(function (res) {
-      _log('remove_' + request.params.target, data);
+      _log(request, 'remove_' + request.params.target, data);
       reply(res);
     });
   }
@@ -121,11 +125,13 @@ module.exports = function (server, config) {
     });
   }
 
-  const _log = function (act, data) {
+  const _log = function (request, act, data) {
     if (!auth_config.index_log) return;
 
     data.action = act;
     data.created = new Date();
+    data.actor = request.auth.credentials;
+    data.ip_addr = getRemoteAddress(request);
     client.create({
       index: auth_config.index_log,
       type: 'kibana-auth-log',

@@ -1,6 +1,8 @@
 'use strict';
 
 var crypto = require('crypto');
+var CryptoJS = require('crypto-js');
+var AES = require('crypto-js/aes');
 var ldap = require('ldapjs');
 var fs = require('fs');
 
@@ -25,12 +27,21 @@ module.exports = function (server, config) {
     var hash = crypto.createHash('sha256', secret).update(pwd).digest('hex');
     return hash;
   };
+
+  const decryptAES = function (pwd, secret) {
+    return AES.decrypt(pwd, secret).toString(CryptoJS.enc.Utf8);
+  }
+
+  const getRemoteAddress = function(request) {
+    return request.info.address || request.info.remoteAddress;
+  }
   
-  const authUser = function (username, callback) {
+  const authUser = function (request, username, callback) {
     if (username == auth_config.root_account) {
       callback({
         name: username,
-        group: 'Admin'
+        group: 'Admin',
+        ip_addr: getRemoteAddress(request)
       })
 
       return;
@@ -47,17 +58,22 @@ module.exports = function (server, config) {
       }
     }).then(function (res) {
       let result = res.hits.total > 0 ? res.hits.hits[0]._source : undefined;
-      if (auth_config.index_log) {
-        result.action = 'login';
-        result.created = new Date();
-        client.create({
-          index: auth_config.index_log,
-          type: 'kibana-auth-log',
-          id: result.action + username + encode(result.created.toString()),
-          body: result
-        }, function (err, res) {
 
-        });
+      if (result) {
+        result.ip_addr = getRemoteAddress(request);
+
+        if (auth_config.index_log) {
+          result.action = 'login';
+          result.created = new Date();
+          client.create({
+            index: auth_config.index_log,
+            type: 'kibana-auth-log',
+            id: result.action + username + encode(result.created.toString()),
+            body: result
+          }, function (err, res) {
+
+          });
+        }
       }
 
       callback(result, res);
@@ -113,6 +129,7 @@ module.exports = function (server, config) {
 
     if (!username && !password) { processing = false; }
     if (username || password){
+      password = decryptAES(password, 'kibana-auth-plugin-made-by-goofy-encryptkey');
       //login console.log('connect to ldap');
       ldap_client = ldap.createClient({
         url: auth_config.ldap_url
@@ -135,7 +152,7 @@ module.exports = function (server, config) {
                 if(entry.object) {
                     var checked = true;
                     const sid = String(++uuid);
-                    let user = authUser(username, function (user, res) {
+                    let user = authUser(request, username, function (user, res) {
                       if (!user) {
                         return replyResponse('Unregistered user');
                       } else {
@@ -147,7 +164,7 @@ module.exports = function (server, config) {
                             } else {
                               request.auth.session.set({ sid: sid });
                               //login console.log('logged in successfully')
-                              return replyResponse('')
+                              return replyResponse('');
                             }
 
                           });
