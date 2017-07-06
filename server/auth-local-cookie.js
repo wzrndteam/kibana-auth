@@ -37,47 +37,56 @@ module.exports = function (server, config) {
   }
   
   const authUser = function (request, username, callback) {
-    if (username == auth_config.root_account) {
-      callback({
-        name: username,
-        group: 'Admin',
-        ip_addr: getRemoteAddress(request)
-      })
-
-      return;
-    }
-    client.search({
-      index: auth_config.index_user_info,
-      type: doc_type,
-      body: {
-        query: {
-          match: {
-            _id: encode(username)
-          }
-        }
-      }
-    }).then(function (res) {
-      let result = res.hits.total > 0 ? res.hits.hits[0]._source : undefined;
-
-      if (result) {
-        result.ip_addr = getRemoteAddress(request);
-
+    const _log = function (result, res) {
         if (auth_config.index_log) {
+          let date_now = new Date();
           result.action = 'login';
-          result.created = new Date();
+          result.created = date_now;
           client.create({
-            index: auth_config.index_log,
+            index: auth_config.index_log + '-' + date_now.getFullYear() + '-' + ('0' + date_now.getMonth()).substr(-2, 2) + '-' + ('0' + date_now.getDay()).substr(-2, 2),
             type: 'kibana-auth-log',
             id: result.action + username + encode(result.created.toString()),
             body: result
           }, function (err, res) {
 
           });
-        }
-      }
 
-      callback(result, res);
-    });
+          result.action = undefined;
+        }
+    }
+
+    if (username == auth_config.root_account) {
+      let result = {
+        name: username,
+        group: 'Admin',
+        ip_addr: getRemoteAddress(request)
+      };
+
+      _log(result);
+      callback(result);
+    } else {
+      client.search({
+        index: auth_config.index_user_info,
+        type: doc_type,
+        body: {
+          query: {
+            match: {
+              _id: encode(username)
+            }
+          }
+        }
+      }).then(function (res) {
+        let result = res.hits.total > 0 ? res.hits.hits[0]._source : undefined;
+
+        if (result) {
+          result.ip_addr = getRemoteAddress(request);
+        }
+
+        _log(result, res);
+        callback(result, res);
+      });
+    }
+    
   }
 
   const getGroups = function (callback) {

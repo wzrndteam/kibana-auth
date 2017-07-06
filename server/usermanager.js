@@ -128,12 +128,13 @@ module.exports = function (server, config) {
   const _log = function (request, act, data) {
     if (!auth_config.index_log) return;
 
+    let date_now = new Date();
     data.action = act;
-    data.created = new Date();
+    data.created = date_now;
     data.actor = request.auth.credentials;
     data.ip_addr = getRemoteAddress(request);
     client.create({
-      index: auth_config.index_log,
+      index: auth_config.index_log + '-' + date_now.getFullYear() + '-' + ('0' + date_now.getMonth()).substr(-2, 2) + '-' + ('0' + date_now.getDay()).substr(-2, 2),
       type: 'kibana-auth-log',
       id: data.action + data.name + encode(data.created.toString()),
       body: data
