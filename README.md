@@ -24,10 +24,14 @@ Offline 환경에서 설치할 경우, 설치 파일을 다운로드 받아서 �
 
 # 초기 설정
 우선 Config 파일을 구성해야 합니다.  
+Kibana 설치 폴더 하위의 installedPlulgins/kibana-auth 폴더로 이동합니다.  
+
+    ex, cd /opt/kibana/installedPlugins/kibana-auth/
+
 config.json.template 파일을 복사하여, config.json 파일을 만듭니다.
 
 ## Config 파일 구성
-config.json 파일 변경 후 Kibana를 재시작 해야만 변경 사항이 적용 됩니다.  
+config.json 파일 생성 후 Kibana를 재시작 해야만 변경 사항이 적용 됩니다.  
 설정 항목 별 내용은 아래와 같습니다.  
 
 - kibana_version : Kibana의 버전을 명시합니다. (ex, 4.6.4)
@@ -63,11 +67,12 @@ Admin 권한으로 로그인 되어 전체 기능을 제약 없이 사용할 수
 User List는 비어 있는 것을 확인할 수 있습니다.
 
 ### Group 권한
-* Admin은 최상위 권한을 가진 특수 그룹으로, 대부분의 권한 설정에 대한 제약을 받지 않습니다.
+* Admin은 최상위 권한을 가진 특수 그룹으로, 대부분의 권한 설정에 대한 제약을 받지 않습니다.  
 그룹의 관리와 그룹 별 권한 설정은 Admin 그룹에 속한 계정만 가능합니다.
 * Manager는 Admin 다음의 상위 권한을 가진 특수 그룹입니다.  
 하지만 권한 설정의 제약은 동일하게 적용 됩니다.  
-예외적으로 별도의 권한 설정 없이도 계정 관리 페이지에 대한 접근이 허용됩니다.
+예외적으로 별도의 권한 설정 없이도 계정 관리 페이지에 대한 접근이 허용됩니다.  
+=> config.json의 default_role_for_manager에 의해 작동합니다.
 * 그 외 생성하는 모든 그룹은 일반 권한 그룹에 속하며,  
 상위 권한 그룹인 Admin이나 Manager 그룹과 그 구성원의 속성을 변경할 수 없습니다.
 
