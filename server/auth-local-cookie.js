@@ -5,9 +5,10 @@ var CryptoJS = require('crypto-js');
 var AES = require('crypto-js/aes');
 var ldap = require('ldapjs');
 var fs = require('fs');
+var path = require('path');
 
 module.exports = function (server, config) {
-  const auth_config = JSON.parse(fs.readFileSync('installedPlugins/kibana-auth/config.json'));
+  const auth_config = JSON.parse(fs.readFileSync(path.resolve(__dirname) + '/../config.json'));
   const _default_secret = auth_config.default_cookie_secret;
   const doc_type = auth_config.doc_type;
   

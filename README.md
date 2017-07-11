@@ -8,6 +8,11 @@ Kibana에서 Ldap 연동을 통한 사용자 인증과 접근 권한을 관리�
 
     /opt/kibana/bin/kibana plugin -i kibana-auth -u https://github.com/wzrndteam/kibana-auth/releases/download/0.0.1/kibana4-auth-0.0.1.zip
 
+Ubuntu에서 설치 시, 권한 설정에 주의하시기 바랍니다.
+Ubuntu에서는 설치 후 플러그인 설치 폴더의 소유자를 변경해야 할 수 있습니다.
+
+    chown -R kibana: /opt/kibana/installedPlugins
+
 ## Offline 설치
 Offline 환경에서 설치할 경우, 설치 파일을 다운로드 받아서 설치할 수 있습니다.
 
