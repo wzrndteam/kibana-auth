@@ -162,18 +162,18 @@ const managerRouteInfo = {
         $scope.message = "Invalid " + $scope.createTarget + " name";
         return false;
       }
-      
-      if (!$scope.createData.group) {
-        $scope.message = "Invalid group";
-        return false;
-      }
 
       $scope.creating = true;
       $scope.createTarget = $scope.createTarget;
 
       if ($scope.createTarget == 'Group') {
         $scope.createData.level = 2;
-      } else {
+      } else {      
+        if (!$scope.createData.group) {
+          $scope.message = "Invalid group";
+          return false;
+        }
+        
         $scope.createData.level = undefined;
       }
       
